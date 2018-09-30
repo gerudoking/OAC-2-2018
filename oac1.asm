@@ -1,11 +1,15 @@
 #-----------------------------
 #Projeto 1 OAC 2/2018
 #-----------------------------
+#Importante: deixar o fluxo do programa de maneira que
+#se possa escolher qual rotina executar com a imagem
 
 .data
 imageBuffer:	.space	1000000
 inputBuffer:	.space	1000000
 file:		.asciiz	"img.bmp"
+blurMessage:	.asciiz "Digite a altura da curva gaussiana"
+blurMask:	.space	1000000
 
 .text
 openfile:
@@ -44,3 +48,12 @@ beq $t5, $t2, exit
 j loop
 
 exit:
+
+getBlurMaskParameters:	#Janela de diálogo que pega um inteiro para mascara do blur
+li $v0, 51
+la $a0, blurMessage
+syscall
+move $s7, $a0
+la $t0, blurMask
+
+blurMaskLoop:		#Constroi a máscara
